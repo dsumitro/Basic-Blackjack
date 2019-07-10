@@ -133,19 +133,22 @@ class GameState {
     checkWinCondition(){
         // Compare
         if(this.dealer.getHandValue() > 21){
-            console.log("DEALER IS OVER 21, DEALER LOSE.")
+            console.log(
+                '\x1b[5m\x1b[32m%s\x1b[0m',
+                'DEALER IS OVER 21, DEALER LOSES. YOU WIN!'
+              );
         }
         else if(this.player.getHandValue() > 21){
-            console.log("YOU ARE OVER 21, YOU LOSE")
+            console.log('\x1b[5m\x1b[31m%s\x1b[0m',"YOU ARE OVER 21, YOU LOSE")
         }
         else if(this.dealer.getHandValue() < this.player.getHandValue()){
-            console.log("YOU WON, DEALER LOSE.")
+            console.log('\x1b[5m\x1b[32m%s\x1b[0m',"YOU WON, DEALER LOSE.")
         }
         else if (this.dealer.getHandValue() === this.player.getHandValue()){
-            console.log("ITS A TIE...");
+            console.log('\x1b[5m\x1b[31m%s\x1b[0m',"ITS A TIE...");
         }
         else{
-            console.log("DEALER WON, YOU LOSE");
+            console.log('\x1b[5m\x1b[31m%s\x1b[0m',"DEALER WON, YOU LOSE");
         }
     }
 }
