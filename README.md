@@ -1,2 +1,3 @@
 # Blackjack
-A simple Blackjack game
+A simple MVP Blackjack game
+Using knowledge of objects and classes
