@@ -54,7 +54,7 @@ class Card {
      addToHand(card){         
         this.hand.push(card);
     }
-    
+
      /**
       * Gets the total value of the hand
       * @returns {int} The sum of all the values of the cards on hand
@@ -91,6 +91,11 @@ class Card {
      getHand(){
          return this.hand;
      }
+     printHand(){
+         return this.hand.map((card)=>{
+            return `${card.weight} of ${card.suit}`;
+         })
+     }
  }
  /**Represents a blackjack card dealer*/
 class Dealer extends CardHolder{
@@ -125,7 +130,7 @@ class GameState {
         this.checkWinCondition();
     }
     openingTitle(){
-        //console.clear();
+        console.clear()
         console.log(
         ".------..------..------..------..------.     .------..------..------..------.\n"+
         "|B.--. ||L.--. ||A.--. ||C.--. ||K.--. |.-.  |J.--. ||A.--. ||C.--. ||K.--. |\n"+
@@ -136,17 +141,17 @@ class GameState {
     }
     printOutAllHands(){
         console.log("Dealer's Hand")
-        console.log(this.dealer.getHand())
+        console.log(this.dealer.printHand());
         console.log(`Dealer's Value: ${this.dealer.getHandValue()}`)
         console.log(" ");
         console.log("Your Hand")
-        console.log(this.player.getHand())
+        console.log(this.player.printHand());
         console.log(`Your Value: ${this.player.getHandValue()}`)
 
     }
     checkWinCondition(){
         const dealersScore = this.dealer.getHandValue();
-        const playerScore = this.player.getHandValue;
+        const playerScore = this.player.getHandValue();
 
         if(dealersScore > 21){
             console.log(
@@ -157,8 +162,8 @@ class GameState {
         else if(playerScore > 21){
             console.log('\x1b[5m\x1b[31m%s\x1b[0m',"\tYOU ARE OVER 21, YOU LOSE")
         }
-        else if(dealersScore < playerScore){
-            console.log('\x1b[5m\x1b[32m%s\x1b[0m',"\tYOU WON, DEALER LOSE.")
+        else if(playerScore > dealersScore){
+            console.log('\x1b[5m\x1b[32m%s\x1b[0m',"\tYOU WON")
         }
         else if (dealersScore === playerScore){
             console.log('\x1b[5m\x1b[31m%s\x1b[0m',"\tITS A TIE...");
