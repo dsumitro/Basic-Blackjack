@@ -46,20 +46,26 @@ class Card {
 
 /**Represents an Person who holds a hand of cards */
  class CardHolder {
-     hand = [];
+     
+     constructor(){
+        this.hand = [];
+        this.handValue = 0;
+
+     }
      /**
       * Adds a card to the Hand
       * @param {Card} card A card object
       */
      addToHand(card){         
         this.hand.push(card);
+        this.handValue = this.calculateValue();
     }
 
      /**
       * Gets the total value of the hand
       * @returns {int} The sum of all the values of the cards on hand
       */
-     getHandValue(){
+     calculateValue(){
         // Returns total value of hand
         return this.hand.reduce((accumulator,currentValue) => accumulator + this.convertValue(currentValue.weight),0)        
      }
@@ -82,6 +88,10 @@ class Card {
                 return value;
                 break;
         }
+     }
+
+     getHandValue(){
+         return this.handValue;
      }
      
      /**
@@ -154,10 +164,7 @@ class GameState {
         const playerScore = this.player.getHandValue();
 
         if(dealersScore > 21){
-            console.log(
-                '\x1b[5m\x1b[32m%s\x1b[0m',
-                '\tDEALER IS OVER 21, DEALER LOSES. YOU WIN!'
-              );
+            console.log('\x1b[5m\x1b[32m%s\x1b[0m','\tDEALER IS OVER 21, DEALER LOSES. YOU WIN!');
         }
         else if(playerScore > 21){
             console.log('\x1b[5m\x1b[31m%s\x1b[0m',"\tYOU ARE OVER 21, YOU LOSE")
