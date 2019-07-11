@@ -1,54 +1,75 @@
+
+/**Class representing a playing card */
 class Card {
+    /**
+     * Creates a card
+     * @param {String} suit - The suit of a card such as "Clubs","Hearts","Spades", or "Diamonds".
+     * @param {value} weight - The value of the card such as 2-10, Jack, Queen, King, or ACE.
+     */
     constructor(suit,weight){
         this.suit = suit;
         this.weight = weight;
     }
   };
- 
+
+/**Class representing a deck of cards */
  class Deck {
      cards = [];
-     //removedCards = [];
+     /**
+      * Creates a deck of cards
+      */
      constructor(){
-        const cardRank = [1,2,3,4,5,6,7,8,9,"Jack","Queen","King","Ace"];
-        const cardSuit = ["Clubs","Spades","Hearts","Diamonds"];
-        for(let i = 0; i < 4; i++){
-            for(let j = 0; j < 13;j++ ){
-                this.cards.push(new Card(cardSuit[i],cardRank[j]));
-            }
-        }
+        const ranks = [1,2,3,4,5,6,7,8,9,"Jack","Queen","King","Ace"];
+        const suits = ["Clubs","Spades","Hearts","Diamonds"];
+
+        ranks.forEach((rank)=>{
+            suits.forEach((suit)=>{
+                this.cards.push(new Card(suit,rank));
+            })
+        })
         this.shuffle();
      }
+     /**
+      * Shuffles deck of cards
+      */
      shuffle(){
          this.cards.sort(()=> Math.random()-0.5);
      }
-     removeCards(){
-         console.log("Not implemented yet.")
-     }
+     /**
+      * Returns a card from the deck.
+      * @returns {Card} A Card from the deck
+      */
      getCard(){
          return this.cards.shift();
      }
  }
- /*-----------------------------
- //let asdf = new Deck();
- //asdf.getCards();
- //*/
+
+/**Represents an Person who holds a hand of cards */
  class CardHolder {
      hand = [];
-     constructor() {
-        // Nothing for me
-     }
+     /**
+      * Adds a card to the Hand
+      * @param {Card} card A card object
+      */
+     addToHand(card){         
+        this.hand.push(card);
+    }
+    
+     /**
+      * Gets the total value of the hand
+      * @returns {int} The sum of all the values of the cards on hand
+      */
      getHandValue(){
         // Returns total value of hand
-        let value = 0;
-        this.hand.forEach((card)=>{
-            
-            value += this.convertValue(card.weight);
-        })
-        return value;
+        return this.hand.reduce((accumulator,currentValue) => accumulator + this.convertValue(currentValue.weight),0)        
      }
+     /**
+      * Converts Blackjack card values into a calculatable value.
+      * @param {value} value Takes in either integers 1-9 or string values of either Jack, Queen, King, Ace
+      * @returns {int} Total value of the hand
+      */
      convertValue(value){
         switch (value) {
-
             case "Ace":
                 return 11;
                 break;
@@ -62,96 +83,90 @@ class Card {
                 break;
         }
      }
-     addToHand(card){         
-         this.hand.push(card);
-     }
+     
+     /**
+      * Returns all cards from hand
+      * @returns An array of card objects
+      */
      getHand(){
          return this.hand;
      }
  }
- /*-------------------------
-let asdf = new CardHolder();
-asdf.addToHand(new Card("heart",10));
-asdf.addToHand(new Card("spade",2));
-asdf.addToHand(new Card("spade",'Ace'));
-asdf.addToHand(new Card("Club",'King'));
-asdf.addToHand(new Card("spade",6));
-asdf.getHand();
-//*/
+ /**Represents a blackjack card dealer*/
 class Dealer extends CardHolder{
+    /**
+     * Draws one card from the deck and gives it to the hand
+     * @param {Deck} deck A deck of cards
+     * @param {CardHolder} hand A player
+     */
     drawCard(deck,hand){
         hand.addToHand(deck.getCard());
     }
 }
-
-/*-------------------
-let dck = new Deck();
-console.log(dck);
-let asdf = new Dealer();
-let ply = new CardHolder();
-asdf.drawCard(dck,asdf);
-asdf.drawCard(dck,ply);
-asdf.drawCard(dck,asdf);
-asdf.drawCard(dck,ply);
-console.log('Dealer')
-console.log(asdf.getHand());
-console.log(asdf.getHandValue())
-console.log('Player')
-console.log(ply.getHand())
-console.log(ply.getHandValue())
-
-//*/
+/**Represents the Gamestate logic */
 class GameState {
     constructor(){
         this.deck = new Deck();
         this.dealer = new Dealer();
         this.player = new CardHolder();
     }
+    /**
+     * Plays out the game of blackjack one time
+     */
     gameLoop(){
         this.openingTitle();
-        // Draws
+    
         this.dealer.drawCard(this.deck,this.player);
         this.dealer.drawCard(this.deck,this.dealer);
         this.dealer.drawCard(this.deck,this.player);
         this.dealer.drawCard(this.deck,this.dealer);
         this.printOutAllHands();
+        // Game Loop
         this.checkWinCondition();
-        
     }
     openingTitle(){
-        console.log("BASIC Blackjack")
+        //console.clear();
+        console.log(
+        ".------..------..------..------..------.     .------..------..------..------.\n"+
+        "|B.--. ||L.--. ||A.--. ||C.--. ||K.--. |.-.  |J.--. ||A.--. ||C.--. ||K.--. |\n"+
+        "| :(): || :/ : || (  ) || :/ : || :/ : ((5)) | :(): || (  ) || :/ : || :/ : |\n"+
+        "| ()() || (__) || :  : || :  : || :  : |'-.-.| ()() || :  : || :  : || :  : |\n"+
+        "| '--'B|| '--'L|| '--'A|| '--'C|| '--'K| ((2)) '--'J|| '--'A|| '--'C|| '--'K|\n"+
+        "`------'`------'`------'`------'`------'  '-'`------'`------'`------'`------'");
     }
     printOutAllHands(){
         console.log("Dealer's Hand")
         console.log(this.dealer.getHand())
         console.log(`Dealer's Value: ${this.dealer.getHandValue()}`)
+        console.log(" ");
         console.log("Your Hand")
         console.log(this.player.getHand())
         console.log(`Your Value: ${this.player.getHandValue()}`)
 
     }
     checkWinCondition(){
-        // Compare
-        if(this.dealer.getHandValue() > 21){
+        const dealersScore = this.dealer.getHandValue();
+        const playerScore = this.player.getHandValue;
+
+        if(dealersScore > 21){
             console.log(
                 '\x1b[5m\x1b[32m%s\x1b[0m',
-                'DEALER IS OVER 21, DEALER LOSES. YOU WIN!'
+                '\tDEALER IS OVER 21, DEALER LOSES. YOU WIN!'
               );
         }
-        else if(this.player.getHandValue() > 21){
-            console.log('\x1b[5m\x1b[31m%s\x1b[0m',"YOU ARE OVER 21, YOU LOSE")
+        else if(playerScore > 21){
+            console.log('\x1b[5m\x1b[31m%s\x1b[0m',"\tYOU ARE OVER 21, YOU LOSE")
         }
-        else if(this.dealer.getHandValue() < this.player.getHandValue()){
-            console.log('\x1b[5m\x1b[32m%s\x1b[0m',"YOU WON, DEALER LOSE.")
+        else if(dealersScore < playerScore){
+            console.log('\x1b[5m\x1b[32m%s\x1b[0m',"\tYOU WON, DEALER LOSE.")
         }
-        else if (this.dealer.getHandValue() === this.player.getHandValue()){
-            console.log('\x1b[5m\x1b[31m%s\x1b[0m',"ITS A TIE...");
+        else if (dealersScore === playerScore){
+            console.log('\x1b[5m\x1b[31m%s\x1b[0m',"\tITS A TIE...");
         }
         else{
-            console.log('\x1b[5m\x1b[31m%s\x1b[0m',"DEALER WON, YOU LOSE");
+            console.log('\x1b[5m\x1b[31m%s\x1b[0m',"\tDEALER WON, YOU LOSE");
         }
     }
 }
-
-let asdf = new GameState();
-asdf.gameLoop();
+// Start the game
+new GameState().gameLoop();
