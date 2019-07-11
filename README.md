@@ -1,5 +1,6 @@
 # Blackjack
-A simple Blackjack game using JavaScript classes
+A simple MVP Blackjack game
+Using knowledge of objects and classes
 
 ## Getting Started
 
