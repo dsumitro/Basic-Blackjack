@@ -17,17 +17,13 @@ class Deck {
    * Creates a deck of cards
    */
   constructor() {
-    /**
-     * on Windows we needed to have cards inside the constructor
-     * Rob was on the superior OS , Linux and could have cards outside
-     */
     this.cards = [];
-    const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 'Jack', 'Queen', 'King', 'Ace'];
+    const weights = [1, 2, 3, 4, 5, 6, 7, 8, 9, 'Jack', 'Queen', 'King', 'Ace'];
     const suits = ['Clubs', 'Spades', 'Hearts', 'Diamonds'];
 
-    ranks.forEach(rank => {
+    weights.forEach(weight => {
       suits.forEach(suit => {
-        this.cards.push(new Card(suit, rank));
+        this.cards.push(new Card(suit, weight));
       });
     });
     this.shuffle();
