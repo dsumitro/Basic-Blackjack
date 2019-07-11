@@ -13,7 +13,7 @@ On console run the following command `npm start`to start the game. The game will
 ### Features
 
 * It works.
-* ![Gif of game](/home/rsanchez/Downloads/ezgif-1-e87701e98474.gif)
+* ![Gif of game](https://raw.githubusercontent.com/Zyxel-1/Blackjack/master/screencapOfGame.gif)
 
 
 ## Collaborators
