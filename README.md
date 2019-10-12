@@ -13,7 +13,7 @@ On console run the following command `npm start`to start the game. The game will
 
 ### Features
 
-* It works.
+* Basic Blackjack game running in the console
 * ![Gif of game](https://raw.githubusercontent.com/Zyxel-1/Blackjack/master/screencapOfGame.gif)
 
 
